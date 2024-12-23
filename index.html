@@ -2,253 +2,171 @@
 <html lang="en">
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Movie Library</title>
-  <style>
-    /* Media Queries for responsiveness */
-    @media (max-width: 1200px) {
-      header {
-        padding: 10px 60px;
-      }
-      #menu {
-        display: none;
-      }
-      #hamburger {
-        display: block;
-      }
-      #movieGrid {
-        flex-wrap: wrap;
-        gap: 15px;
-      }
-      .movie-card {
-        width: 45%;
-      }
-      #library {
-        padding: 30px 60px;
-      }
-      #contact {
-        padding: 60px 30px;
-      }
-    }
-    @media (max-width: 768px) {
-      #menu {
-        display: none;
-      }
-      #hamburger {
-        display: block;
-      }
-      #movieGrid {
-        flex-wrap: wrap;
-        gap: 15px;
-      }
-      .movie-card {
-        width: 100%;
-      }
-      #library {
-        padding: 30px 30px;
-      }
-      #contact {
-        padding: 50px 20px;
-      }
-    }
-  </style>
-  <script>
-    // Hamburger Menu Toggle
-    document.addEventListener('DOMContentLoaded', () => {
-      const hamburger = document.getElementById('hamburger');
-      const menu = document.getElementById('menu');
-      hamburger.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-      });
-  
-      const searchInput = document.getElementById('search-input');
-      const movieGrid = document.getElementById('movieGrid');
-  
-      searchInput.addEventListener('input', function() {
-        const query = searchInput.value;
-        if (query) {
-          searchMovies(query);
-        } else {
-          loadRandomMovies();
-        }
-      });
-    });
 
-    // Function to search movies
-    async function searchMovies(query) {
-      const movieGrid = document.getElementById('movieGrid');
-      const response = await fetch(`https://api.tvmaze.com/search/shows?q=${query}`);
-      const data = await response.json();
-      movieGrid.innerHTML = '';  // Clear previous results
-      
-      data.forEach(item => {
-        const movie = item.show;
-        const movieEl = document.createElement('div');
-        movieEl.className = 'movie-card';
-        movieEl.style.backgroundColor = '#1a1919';
-        movieEl.style.padding = '20px';
-        movieEl.style.borderRadius = '5px';
-        movieEl.style.textAlign = 'center';
-        movieEl.style.width = '30%';
-        movieEl.style.marginRight = '20px';
-        
-        movieEl.innerHTML = ` 
-          <img src="${movie.image ? movie.image.medium : 'assets/images/Rectangle 4.png'}" 
-               alt="${movie.name}" style="width: 100%; height: auto;">
-          <h3 style="margin: 10px 0; color: #fff;">${movie.name}</h3>
-          <p style="color: #aaa;">Rating: ${movie.rating.average || 'N/A'}</p>
-        `;
-        movieGrid.appendChild(movieEl);
-      });
-    }
-
-    // Function to load random movies
-    async function loadRandomMovies() {
-      const randomMovies = ['Breaking Bad', 'Friends', 'Game of Thrones', 'Stranger Things', 'The Office'];
-      const movieGrid = document.getElementById('movieGrid');
-      movieGrid.innerHTML = '';  // Clear previous results
-      
-      for (let movieName of randomMovies) {
-        const response = await fetch(`https://api.tvmaze.com/search/shows?q=${movieName}`);
-        const data = await response.json();
-        
-        const movie = data[0].show;
-        const movieEl = document.createElement('div');
-        movieEl.className = 'movie-card';
-        movieEl.style.backgroundColor = '#1a1919';
-        movieEl.style.padding = '20px';
-        movieEl.style.borderRadius = '5px';
-        movieEl.style.textAlign = 'center';
-        movieEl.style.width = '30%';
-        movieEl.style.marginRight = '20px';
-        
-        movieEl.innerHTML = ` 
-          <img src="${movie.image ? movie.image.medium : 'assets/images/Rectangle 4.png'}" 
-               alt="${movie.name}" style="width: 100%; height: auto;">
-          <h3 style="margin: 10px 0; color: #fff;">${movie.name}</h3>
-          <p style="color: #aaa;">Rating: ${movie.rating.average || 'N/A'}</p>
-        `;
-        movieGrid.appendChild(movieEl);
-      }
-    }
-
-    // Load random movies on initial page load
-    window.onload = loadRandomMovies;
-  </script>
 </head>
 <body style="margin: 0; font-family: Arial, sans-serif; color: #fff; background-color: #000;">
 
+  <script src="assets/js/script.js"></script>
+
   <!-- Navbar -->
-  <header style="background-color: #202020; padding: 10px 90px; display: flex; align-items: center; justify-content: space-between;">
+  <header>
     <div>
-      <img src="assets/images/logo.png" alt="Logo" style="height: 50px;">
+      <a href="#home" onclick="scrollToTop()" style="cursor: pointer;">
+        <img src="assets/images/logo.png" alt="Logo">
+      </a>
     </div>
-    <nav style="flex: 1; text-align: center;">
-      <ul id="menu" style="list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 20px;">
-        <li><a href="#home" style="color: #fff; text-decoration: none;">Home</a></li>
-        <li><a href="#screens" style="color: #fff; text-decoration: none;">Our Screens</a></li>
-        <li><a href="#schedule" style="color: #fff; text-decoration: none;">Schedule</a></li>
-        <li><a href="#library" style="color: #fff; text-decoration: none;">Movie Library</a></li>
-        <li><a href="#contact" style="color: #fff; text-decoration: none;">Location & Contact</a></li>
-      </ul>
-    </nav>
-    <div id="hamburger" style="cursor: pointer; font-size: 30px; color: #fff; display: none;">
-      &#9776;
+    <div style="display: flex; align-items: center; gap: 25px;">
+      <nav>
+        <ul id="menu">
+          <li><a href="#home-image" onclick="scrollToSection(event, '#home-image')">HOME</a></li>
+          <li><a href="#screens" onclick="scrollToSection(event, '#screens')">OUR SCREENS</a></li>
+          <li><a href="#schedule" onclick="scrollToSection(event, '#schedule')">SCHEDULE</a></li>
+          <li><a href="#library" onclick="scrollToSection(event, '#library')">MOVIE LIBRARY</a></li>
+          <li><a href="#contact" onclick="scrollToSection(event, '#contact')">LOCATION & CONTACT</a></li>
+        </ul>
+      </nav>
+      <div id="hamburger">
+        &#9776;
+      </div>
     </div>
   </header>
+  
+  
 
   <!-- Banner Section -->
-  <section id="home-image" style="width: 100%; height: auto;">
-    <img src="assets/images/banner.png" alt="Theater Image" style="width: 100%; height: auto;">
+  <section id="home-image" style="width: 100%; height: auto; position: relative; overflow: hidden;">
+    <div id="slideshow-container" style="display: flex; width: 100%; transition: transform 1s ease-in-out;">
+  
+      <div class="slide" style="width: 100%; flex-shrink: 0;">
+        <img src="assets/images/banner.png" style="width: 100%; height: auto;">
+        
+      </div>
+
+      <div class="slide" style="width: 100%; flex-shrink: 0;">
+        <img src="assets/images/family.jpg" style="width: 100%; height: auto;">
+        
+      </div>
+  
+      <div class="slide" style="width: 100%; flex-shrink: 0;">
+        <img src="assets/images/commingsoon.jpg" style="width: 100%; height: auto;">
+        
+      </div>
+  
+    </div>
   </section>
   
-  <section id="home-text" style="background-color: #141414; color: #fff; padding: 40px 90px;">
+  <section id="home-text" style="background-color: #0F0F0F; color: #fff; ">
     <div style="text-align: left;">
       <h1 style="font-size: 50px; margin: 0;">MOVIE LIBRARY</h1>
-      <p style="margin: 15px 0; font-size: 20px;">Explore the best movie collection and schedule.</p>
+      <p style="margin: 15px 0; font-size: 20px;">Lorem ipsum dolor sit amet, consetetur sadipscing elitr,<br>
+        sed diam nonumy eirmod tempor invidunt ut labore et  <br>
+        dolore magna aliquyam erat, sed diam voluptua. </p>
     </div>
   </section>
 
   <!-- Favorites Section -->
-  <section id="library" style="background-color: #0f0e0e; padding: 50px 90px;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <h2 style="margin: 20px;font-size: 35px;">Collect your favourites</h2>
-      <div style="position: relative;">
-        <input id="search-input" type="text" placeholder="Search title and add to grid" 
-          style="padding: 10px 35px 10px 10px; border: 1px solid #666; border-radius: 5px; width: 300px; background-color: #1a1919; color: #fff;">
-        <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #666;">🔍</span>
+  <section id="library">
+    <div class="library-header">
+      <h2>Collect your favourites</h2>
+      <div class="search-container">
+        <input id="search-input" type="text" placeholder="Search title and add to grid">
+        <span class="search-icon">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
       </div>
     </div>
-    <hr style="margin: 20px 0 30px 0; border-color: #555; border-width: 4px;">
-
+    <hr class="library-divider">
+  
     <!-- Movie Cards Grid -->
-    <div id="movieGrid" style="display: flex; gap: 20px; justify-content: space-between;"></div>
+    <div id="movieGrid" class="movie-grid"></div>
   </section>
+  
 
    <!-- Contact Us -->
-   <section id="contact" style="background-color: #000; padding: 90px 90px;">
-    <div style="display: flex; justify-content: space-between; gap: 40px;">
-      <!-- Left Side: Contact Form -->
-      <div style="width: 45%;">
-        <h2 style="margin-bottom: 20px; font-size: 50px; color: #fff;">How to reach us</h2>
-        <p style="margin-bottom: 20px; color: #fff;">Fill the below form and tell us what you need.</p>
-        <form id="contactForm" method="POST" action="contact.php">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-            <div style="width: 48%;">
-              <label style="display: block; margin-bottom: 5px; color: #fff;">First Name *</label>
-              <input type="text" name="first_name" required style="width: 100%; padding: 10px; border: none; border-radius: 5px; background-color: #1a1919; color: #fff;">
-            </div>
-            <div style="width: 48%;">
-              <label style="display: block; margin-bottom: 5px; color: #fff;">Last Name *</label>
-              <input type="text" name="last_name" required style="width: 100%; padding: 10px; border: none; border-radius: 5px; background-color: #1a1919; color: #fff;">
-            </div>
+<section id="contact-intro" style="background-color: #000; ">
+  <div style="text-align: left;">
+    <h2 style="margin-bottom: 20px; font-size: 50px; color: #fff;">How to reach us</h2>
+    <p style="margin-bottom: 20px; color: #fff;">Fill the below form and tell us what you need.</p>
+  </div>
+</section>
+
+<section id="contact-form-map" style="background-color: #000; ">
+  <div class="contact-container">
+    <div class="form-container">
+      <form id="contactForm" method="POST" action="contact.php">
+        <div class="name-fields">
+          <div class="field">
+            <label style="display: block; margin-bottom: 5px; color: #797979;">First Name *</label>
+            <input type="text" name="first_name" required style="width: 100%; padding: 10px; border: none; border-radius: 5px; background-color: #3C3C3C; color: #fff;">
           </div>
-          <label style="display: block; margin-bottom: 5px; color: #fff;">Email *</label>
-          <input type="email" name="email" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: none; border-radius: 5px; background-color: #1a1919; color: #fff;">
-          <label style="display: block; margin-bottom: 5px; color: #fff;">Phone</label>
-          <input type="tel" name="phone" style="width: 100%; padding: 10px; margin-bottom: 15px; border: none; border-radius: 5px; background-color: #1a1919; color: #fff;">
-          <label style="display: block; margin-bottom: 5px; color: #fff;">Message *</label>
-          <textarea name="message" required style="width: 100%; padding: 10px; margin-bottom: 15px; height: 100px; border: none; border-radius: 5px; background-color: #1a1919; color: #fff;"></textarea>
-          <div style="margin-bottom: 15px;">
-            <input type="checkbox" required style="color: #fff;"> I agree to the <a href="#" style="color: #f1b228;">Terms & Conditions</a>
+          <div class="field">
+            <label style="display: block; margin-bottom: 5px; color: #797979;">Last Name *</label>
+            <input type="text" name="last_name" required style="width: 100%; padding: 10px; border: none; border-radius: 5px; background-color: #3C3C3C; color: #fff;">
           </div>
-          <button type="submit" style="background-color: #f1b228; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-            Submit
-          </button>
-        </form>
-      </div>
-    
-      <!-- Right Side: Google Map -->
-      <div style="width: 45%; display: flex; align-items: flex-start; justify-content: center; margin-top: 20px;">
-        <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d100093.90790370047!2d79.9404323!3d6.8448212!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25069caa2f53b%3A0xe7eae3a8b1f1214d!2sEBEYONDS+eBusiness+%26+Digital+Solutions!5e0!3m2!1sen!2sus!4v1630605956032!5m2!1sen!2sus" 
-          width="100%" height="550px" style="border: none; border-radius: 5px;" allowfullscreen="" loading="lazy">
-        </iframe>
-      </div>
+        </div>
+        <label style="display: block; margin-bottom: 5px; color: #797979;">Email *</label>
+        <input type="email" name="email" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: none; border-radius: 5px; background-color: #3C3C3C; color: #fff;">
+        <label style="display: block; margin-bottom: 5px; color: #797979;">Telephone</label>
+        <input type="tel" name="phone" style="width: 100%; padding: 10px; margin-bottom: 15px; border: none; border-radius: 5px; background-color: #3C3C3C; color: #fff;">
+        <label style="display: block; margin-bottom: 5px; color: #797979;">Message</label>
+        <textarea name="message" required style="width: 100%; padding: 10px; margin-bottom: 15px; height: 100px; border: none; border-radius: 5px; background-color: #3C3C3C; color: #fff;"></textarea>
+        <label style="display: block; margin-bottom: 10px; color: #797979;">*required fields</label>
+        <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+          <input type="checkbox" required style="background-color: #000; border: 1px solid #fff;">
+          <span style="color: #797979;">I agree to the <a href="#" style="color: #ffffff;">Terms & Conditions</a></span>
+        </div>
+        <button type="submit" style="background-color: #f1b228; color: #fff; padding: 15px 60px; border: none; border-radius: 5px; cursor: pointer; float: right;">
+          SUBMIT
+        </button>
+      </form>
     </div>
-  </section>
+    <div class="map-container">
+      <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d989.6909434716235!2d79.9378574!3d6.8448212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25069caa2f53b%3A0xe7eae3a8b1f1214d!2seBEYONDS%20eBusiness%20%26%20Digital%20Solutions!5e0!3m2!1sen!2slk!4v1614102677984!5m2!1sen!2slk" 
+        width="100%" 
+        height="500" 
+        style="border: 0; border-radius: 5px;" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+
 
   <!-- Footer -->
   <footer style="background-color: #1d1d1d; padding: 20px; color: #fff;">
-    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0px 90px;">
-      <div>
-        <p><strong>IT Group</strong></p>
-        <p>C. Salvador de Madariaga, 1<br>28027 Madrid, Spain</p>
+    <div class="footer-container">
+      <div class="footer-info">
+        <p><strong>IT Group</strong></p><br>
+        <p>C. Salvador de Madariaga, 1<br>
+          28027 Madrid, <br>
+          Spain
+        </p>
       </div>
-      <div>
-        <a href="#" style="margin-right: 10px; color: #fff; text-decoration: none;">
-          <i class="fa-brands fa-twitter" style="font-size: 20px;"></i>
+      <div class="footer-social">
+        <span>Follow us on</span>
+        <a href="#">
+          <i class="fa-brands fa-twitter"></i>
         </a>
-        <a href="#" style="color: #fff; text-decoration: none;">
-          <i class="fa-brands fa-youtube" style="font-size: 20px;"></i>
+        <a href="#">
+          <i class="fa-brands fa-youtube"></i>
         </a>
       </div>
     </div>
-    <hr style="margin: 10px 0; border-color: #555; border-width: 2px;">
-    <div style="text-align: center; margin-top: 5px;">
-      <p>&copy; 2024 IT Group. All rights reserved.</p>
+    <hr class="footer-divider">
+    <div class="footer-bottom">
+      <p class="footer-copyright">Copyright &copy; 2022 IT Hotels. All rights reserved.</p>
+      <p class="footer-credits">Photos by Felix Mooneeram & 
+        <u>Serge Kutuzau</u> on <u>Unsplash</u>
+      </p>
     </div>
   </footer>
+  
 </body>
 </html>
